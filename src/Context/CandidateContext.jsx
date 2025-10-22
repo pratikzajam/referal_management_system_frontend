@@ -108,7 +108,7 @@ export let CandidateProvider = ({ children }) => {
                 }
             );
 
-            console.log(response.data,"response");
+            console.log(response.data, "response");
 
             if (response.data.status) {
                 toast.success(response.data.message);
@@ -131,10 +131,10 @@ export let CandidateProvider = ({ children }) => {
 
 
     useEffect(() => {
-       
+        if (user) {
             getmetricsData();
-      
-    }, []);
+        }
+    }, [user]);
 
     return (
         <CandidateContext.Provider value={{ metrics, deleteCandidate, updateCandidateStatus, addReferal }}>
