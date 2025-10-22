@@ -139,7 +139,7 @@ export let CandidateProvider = ({ children }) => {
         }
 
 
-    }, [user]);
+    }, []);
 
     return (
         <CandidateContext.Provider value={{ metrics, deleteCandidate, updateCandidateStatus, addReferal }}>
