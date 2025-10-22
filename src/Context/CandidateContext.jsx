@@ -132,8 +132,13 @@ export let CandidateProvider = ({ children }) => {
 
     useEffect(() => {
         if (user) {
+            console.log("user hits");
             getmetricsData();
+        } else {
+            console.log("user not found");
         }
+
+
     }, [user]);
 
     return (
