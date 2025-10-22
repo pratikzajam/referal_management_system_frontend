@@ -131,10 +131,9 @@ export let CandidateProvider = ({ children }) => {
 
 
     useEffect(() => {
-        if (user && user._id) {
+       
             getmetricsData();
-        }
-
+      
     }, []);
 
     return (
