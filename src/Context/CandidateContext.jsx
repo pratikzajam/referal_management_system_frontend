@@ -129,13 +129,10 @@ export let CandidateProvider = ({ children }) => {
 
 
 
+
     useEffect(() => {
-        console.log("User from localStorage:", user);
         if (user) {
-            console.log("Fetching metrics...");
             getmetricsData();
-        } else {
-            console.log("No user found — skipping fetch");
         }
     }, [user]);
 
