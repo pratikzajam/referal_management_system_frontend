@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Users, TrendingUp, Award, Clock } from 'lucide-react';
-import Sidebar from '../components/dashboard/Sidebar';
-import TopBar from '../components/dashboard/TopBar';
-import StatsCard from '../components/dashboard/StatsCard';
-import SearchFilter from '../components/dashboard/SearchFilter';
-import CandidateCard from '../components/dashboard/CandidateCard';
-import ActivityFeed from '../components/dashboard/ActivityFeed';
+import Sidebar from '../components/Dashboard/Sidebar';
+import TopBar from '../components/Dashboard/TopBar';
+import StatsCard from '../components/Dashboard/StatsCard';
+import SearchFilter from '../components/Dashboard/SearchFilter';
+import CandidateCard from '../components/Dashboard/CandidateCard';
+import ActivityFeed from '../components/Dashboard/ActivityFeed';
 import PerformanceMetrics from '../components/Dashboard/PerfromanceMertics';
 import MyReferrals from '../components/Dashboard/MyReferrals';
 import Analytics from '../components/Dashboard/Analytics';
