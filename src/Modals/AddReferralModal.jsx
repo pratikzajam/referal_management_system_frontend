@@ -13,6 +13,7 @@ const AddReferralModal = ({ isOpen, onClose }) => {
     const [fileName, setFileName] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
+    
     const { addReferal } = useCandidate()
 
     const handleInputChange = (e) => {
@@ -35,18 +36,25 @@ const AddReferralModal = ({ isOpen, onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // ✅ Validate required fields
+        if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.jobTitle.trim()) {
+            alert("Please fill all required fields");
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
             const response = await addReferal(formData);
 
-            console.log(response.data)
+            console.log("Referral submission result:", response);
 
             if (response) {
+                // ✅ Show success state
                 setSuccess(true);
 
-
-
+                // ✅ Reset form after 2 seconds
                 setTimeout(() => {
                     setFormData({
                         name: '',
@@ -56,24 +64,15 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                         resume: null
                     });
                     setFileName('');
-
-                    
-
+                    setSuccess(false);
                     onClose();
-
-                     setSuccess(false);
                 }, 2000);
-                return
+            } else {
+                console.log("Referral submission failed");
             }
 
-            console.log("It is Falied")
-
-           
-
-
-
         } catch (error) {
-            console.log(error);
+            console.error("Error in handleSubmit:", error);
             alert("Failed to submit referral. Please try again!");
         } finally {
             setIsSubmitting(false);
@@ -81,6 +80,7 @@ const AddReferralModal = ({ isOpen, onClose }) => {
     };
 
     const handleClose = () => {
+        // ✅ Reset all state
         setFormData({
             name: '',
             email: '',
@@ -90,6 +90,7 @@ const AddReferralModal = ({ isOpen, onClose }) => {
         });
         setFileName('');
         setSuccess(false);
+        setIsSubmitting(false);
         onClose();
     };
 
@@ -128,13 +129,14 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                         <button
                             onClick={handleClose}
                             className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg"
+                            disabled={isSubmitting}
                         >
                             <X className="w-6 h-6" />
                         </button>
                     </div>
 
                     {/* Form */}
-                    <div className="p-6">
+                    <form onSubmit={handleSubmit} className="p-6">
                         <div className="space-y-5">
                             {/* Candidate Name */}
                             <div>
@@ -152,7 +154,8 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                                         onChange={handleInputChange}
                                         required
                                         placeholder="Pratik Zajam"
-                                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        disabled={isSubmitting}
+                                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
                                     />
                                 </div>
                             </div>
@@ -175,7 +178,8 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                                             onChange={handleInputChange}
                                             required
                                             placeholder="zajampratik@gmail.com"
-                                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                            disabled={isSubmitting}
+                                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
                                         />
                                     </div>
                                 </div>
@@ -196,7 +200,8 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                                             onChange={handleInputChange}
                                             required
                                             placeholder="9082684754"
-                                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                            disabled={isSubmitting}
+                                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
                                         />
                                     </div>
                                 </div>
@@ -218,7 +223,8 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                                         onChange={handleInputChange}
                                         required
                                         placeholder="Software Engineer"
-                                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        disabled={isSubmitting}
+                                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50"
                                     />
                                 </div>
                             </div>
@@ -233,12 +239,13 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                                         type="file"
                                         accept=".pdf"
                                         onChange={handleFileChange}
+                                        disabled={isSubmitting}
                                         className="hidden"
                                         id="resume-upload"
                                     />
                                     <label
                                         htmlFor="resume-upload"
-                                        className="w-full flex items-center justify-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 transition-all cursor-pointer bg-gray-50 hover:bg-gray-100"
+                                        className={`w-full flex items-center justify-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-indigo-500 transition-all bg-gray-50 hover:bg-gray-100 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                                     >
                                         <Upload className="w-5 h-5 text-gray-400 mr-2" />
                                         <span className="text-sm text-gray-600">
@@ -262,35 +269,36 @@ const AddReferralModal = ({ isOpen, onClose }) => {
                                 </p>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Footer */}
-                    <div className="flex items-center justify-end space-x-4 p-6 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
-                        <button
-                            type="button"
-                            onClick={handleClose}
-                            className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-100 transition-all"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={handleSubmit}
-                            disabled={isSubmitting}
-                            className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                        >
-                            {isSubmitting ? (
-                                <span className="flex items-center">
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    Submitting...
-                                </span>
-                            ) : (
-                                'Submit Referral'
-                            )}
-                        </button>
-                    </div>
+                        {/* Footer */}
+                        <div className="flex items-center justify-end space-x-4 mt-6">
+                            <button
+                                type="button"
+                                onClick={handleClose}
+                                disabled={isSubmitting}
+                                className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-100 transition-all disabled:opacity-50"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                            >
+                                {isSubmitting ? (
+                                    <span className="flex items-center">
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Submitting...
+                                    </span>
+                                ) : (
+                                    'Submit Referral'
+                                )}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
