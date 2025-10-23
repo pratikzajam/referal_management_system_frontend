@@ -37,7 +37,7 @@ const AddReferralModal = ({ isOpen, onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // ✅ Validate required fields
+       
         if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.jobTitle.trim()) {
             alert("Please fill all required fields");
             return;
@@ -51,10 +51,10 @@ const AddReferralModal = ({ isOpen, onClose }) => {
             console.log("Referral submission result:", response);
 
             if (response) {
-                // ✅ Show success state
+               
                 setSuccess(true);
 
-                // ✅ Reset form after 2 seconds
+              
                 setTimeout(() => {
                     setFormData({
                         name: '',
@@ -80,7 +80,7 @@ const AddReferralModal = ({ isOpen, onClose }) => {
     };
 
     const handleClose = () => {
-        // ✅ Reset all state
+       
         setFormData({
             name: '',
             email: '',
