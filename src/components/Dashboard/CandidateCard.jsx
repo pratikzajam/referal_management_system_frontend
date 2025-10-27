@@ -115,7 +115,7 @@ const CandidateCard = ({ candidate }) => {
               ></path>
             </svg>
           ) : (
-            'Delete Resume'
+            'Delete Referal'
           )}
         </button>
 

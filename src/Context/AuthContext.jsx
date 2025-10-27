@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Load user from storage on mount
+
   useEffect(() => {
     const loadUser = () => {
       try {
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.error("Error loading user from storage:", error);
-        // Clear corrupted data
+     
         localStorage.removeItem('user');
         sessionStorage.removeItem('user');
       } finally {
@@ -45,10 +45,10 @@ export const AuthProvider = ({ children }) => {
       if (response.data.status) {
         const userData = response.data.data;
 
-        // ✅ Store in localStorage
+        
         localStorage.setItem('user', JSON.stringify(userData));
 
-        // ✅ Update state
+        
         setUser(userData);
         
         toast.success(response.data.message || 'Login successful');
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
     loading,
   };
 
-  // ✅ Only render children after loading is complete
+ 
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// ✅ Custom hook
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

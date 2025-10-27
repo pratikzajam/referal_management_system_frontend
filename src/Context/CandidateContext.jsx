@@ -12,7 +12,7 @@ export let CandidateProvider = ({ children }) => {
     const [metrics, setMetrics] = useState({ data: { candidates: [], totalCandidates: 0 } });
     const [loading, setLoading] = useState(false);
     
-    // ✅ Use user from AuthContext instead of reading localStorage directly
+   
     const { user } = useAuth();
 
     let getmetricsData = async () => {
@@ -55,7 +55,7 @@ export let CandidateProvider = ({ children }) => {
             console.log(response.data);
             toast.success(response.data.message);
             
-            // ✅ Immediately refetch data
+         
             await getmetricsData();
             
         } catch (error) {
@@ -81,7 +81,7 @@ export let CandidateProvider = ({ children }) => {
             console.log(response.data);
             toast.success(response.data.message);
 
-            // ✅ Immediately refetch data instead of setTimeout
+        
             await getmetricsData();
 
         } catch (error) {
@@ -101,14 +101,14 @@ export let CandidateProvider = ({ children }) => {
 
             setLoading(true);
 
-            // Create FormData object
+       
             const data = new FormData();
             data.append("candidateName", formData.name);
             data.append("email", formData.email);
             data.append("phoneNumber", formData.phone);
             data.append("jobTitle", formData.jobTitle);
             
-            // ✅ Only append resume if it exists
+           
             if (formData.resume) {
                 data.append("resume", formData.resume);
             }
@@ -126,11 +126,11 @@ export let CandidateProvider = ({ children }) => {
 
             console.log("Add referral response:", response.data);
 
-            // ✅ Check response status correctly
+        
             if (response.data.status || response.status === 200 || response.status === 201) {
                 toast.success(response.data.message || "Referral added successfully");
                 
-                // ✅ Immediately refetch data
+              
                 await getmetricsData();
                 
                 return true;
@@ -148,13 +148,13 @@ export let CandidateProvider = ({ children }) => {
         }
     };
 
-    // ✅ Fetch metrics when user changes or component mounts
+  
     useEffect(() => {
         if (user && user._id) {
             console.log("User found, fetching metrics for:", user._id);
             getmetricsData();
         }
-    }, [user]); // ✅ Add user as dependency
+    }, [user]); 
 
     return (
         <CandidateContext.Provider value={{ 
@@ -163,7 +163,7 @@ export let CandidateProvider = ({ children }) => {
             updateCandidateStatus, 
             addReferal,
             loading,
-            refetchMetrics: getmetricsData // ✅ Expose refetch function
+            refetchMetrics: getmetricsData 
         }}>
             {children}
         </CandidateContext.Provider>
